@@ -8,6 +8,7 @@ namespace ChallengeAlkemy.Models
     {
         [Key]
         public int Id { get; set; }
+        [Url]
         public string Imagen { get; set; }
         [Required]
         [MaxLength(50)]
@@ -17,6 +18,6 @@ namespace ChallengeAlkemy.Models
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Peso { get; set; }
         public string Historia { get; set; }
-        //public List<Pelicula> Peliculas { get; set; }        
+        public List<Pelicula> Peliculas { get; set; }        
     }
 }
