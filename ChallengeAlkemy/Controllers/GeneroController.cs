@@ -30,6 +30,14 @@ namespace ChallengeAlkemy.Controllers
             if (!existe) return BadRequest($"No existe el Genero de Id: {id}");
             return await _context.Generos.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Post(Genero genero)
+        {
+            _context.Generos.Add(genero);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
     
 }
