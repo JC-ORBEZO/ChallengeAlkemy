@@ -30,5 +30,13 @@ namespace ChallengeAlkemy.Controllers
             if (!existir) BadRequest($"La pelicula de Id: {id}, no existe");
             return await _context.Peliculas.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Post(Pelicula pelicula)
+        {
+            _context.Peliculas.Add(pelicula);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
