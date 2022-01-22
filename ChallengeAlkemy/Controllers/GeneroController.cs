@@ -38,6 +38,16 @@ namespace ChallengeAlkemy.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await _context.Generos.AnyAsync(x => x.Id == id);
+            if (!existe) return BadRequest($"No existe el Genero de Id: {id}");
+            _context.Generos.Remove(new Genero { Id = id });
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
     
 }
