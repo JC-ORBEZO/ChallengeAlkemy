@@ -19,6 +19,26 @@ namespace ChallengeAlkemy.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ChallengeAlkemy.Models.Genero", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Imagen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Generos");
+                });
+
             modelBuilder.Entity("ChallengeAlkemy.Models.Pelicula", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +52,9 @@ namespace ChallengeAlkemy.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("Date");
 
+                    b.Property<int?>("GeneroId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Imagen")
                         .HasColumnType("nvarchar(max)");
 
@@ -42,7 +65,9 @@ namespace ChallengeAlkemy.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pelicula");
+                    b.HasIndex("GeneroId");
+
+                    b.ToTable("Peliculas");
                 });
 
             modelBuilder.Entity("ChallengeAlkemy.Models.Personaje", b =>
@@ -89,6 +114,13 @@ namespace ChallengeAlkemy.Migrations
                     b.ToTable("PeliculaPersonaje");
                 });
 
+            modelBuilder.Entity("ChallengeAlkemy.Models.Pelicula", b =>
+                {
+                    b.HasOne("ChallengeAlkemy.Models.Genero", null)
+                        .WithMany("Peliculas")
+                        .HasForeignKey("GeneroId");
+                });
+
             modelBuilder.Entity("PeliculaPersonaje", b =>
                 {
                     b.HasOne("ChallengeAlkemy.Models.Pelicula", null)
@@ -102,6 +134,11 @@ namespace ChallengeAlkemy.Migrations
                         .HasForeignKey("PersonajeAsociadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ChallengeAlkemy.Models.Genero", b =>
+                {
+                    b.Navigation("Peliculas");
                 });
 #pragma warning restore 612, 618
         }

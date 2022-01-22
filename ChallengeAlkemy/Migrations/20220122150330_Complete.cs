@@ -3,24 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChallengeAlkemy.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class Complete : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Pelicula",
+                name: "Generos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "Date", nullable: false),
-                    Calificacion = table.Column<int>(type: "int", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pelicula", x => x.Id);
+                    table.PrimaryKey("PK_Generos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,6 +39,29 @@ namespace ChallengeAlkemy.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Peliculas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "Date", nullable: false),
+                    Calificacion = table.Column<int>(type: "int", nullable: false),
+                    GeneroId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Peliculas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Peliculas_Generos_GeneroId",
+                        column: x => x.GeneroId,
+                        principalTable: "Generos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PeliculaPersonaje",
                 columns: table => new
                 {
@@ -51,9 +72,9 @@ namespace ChallengeAlkemy.Migrations
                 {
                     table.PrimaryKey("PK_PeliculaPersonaje", x => new { x.PeliculasId, x.PersonajeAsociadoId });
                     table.ForeignKey(
-                        name: "FK_PeliculaPersonaje_Pelicula_PeliculasId",
+                        name: "FK_PeliculaPersonaje_Peliculas_PeliculasId",
                         column: x => x.PeliculasId,
-                        principalTable: "Pelicula",
+                        principalTable: "Peliculas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -68,6 +89,11 @@ namespace ChallengeAlkemy.Migrations
                 name: "IX_PeliculaPersonaje_PersonajeAsociadoId",
                 table: "PeliculaPersonaje",
                 column: "PersonajeAsociadoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Peliculas_GeneroId",
+                table: "Peliculas",
+                column: "GeneroId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -76,10 +102,13 @@ namespace ChallengeAlkemy.Migrations
                 name: "PeliculaPersonaje");
 
             migrationBuilder.DropTable(
-                name: "Pelicula");
+                name: "Peliculas");
 
             migrationBuilder.DropTable(
                 name: "Personajes");
+
+            migrationBuilder.DropTable(
+                name: "Generos");
         }
     }
 }
