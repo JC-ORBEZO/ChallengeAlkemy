@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
-    [Route("api/Peliculas")]
+    [Route("movies")]
     public class PeliculaController : ControllerBase
     {
         private readonly ApplicationContext _context;
@@ -16,7 +16,10 @@ namespace ChallengeAlkemy.Controllers
         {
             _context = context;
         }
-
+        /*
+         * métodos:
+         * https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entityframeworkqueryableextensions.tolistasync?view=efcore-6.0
+         */
         [HttpGet]
         public async Task<ActionResult<List<Pelicula>>> Get()
         {
@@ -35,6 +38,24 @@ namespace ChallengeAlkemy.Controllers
         public async Task<ActionResult> Post(Pelicula pelicula)
         {
             _context.Peliculas.Add(pelicula);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(Pelicula pelicula, int id)
+        {
+            var existe = await _context.Personajes.AnyAsync(x => x.Id == id);
+            //if (existe==false) return BadRequest("El Id ingresado no existe.");
+            _context.Peliculas.Update(pelicula);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {            
+            _context.Personajes.Remove(new Personaje { Id = id });
             await _context.SaveChangesAsync();
             return Ok();
         }
