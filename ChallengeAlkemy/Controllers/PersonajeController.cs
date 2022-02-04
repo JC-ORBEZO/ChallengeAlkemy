@@ -1,4 +1,5 @@
 ﻿using ChallengeAlkemy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
     [Route("characters")]
+    [Authorize]
     public class PersonajeController : ControllerBase
     {
         private readonly ApplicationContext _context;
@@ -25,13 +27,13 @@ namespace ChallengeAlkemy.Controllers
         }
 
         //Listado por Id
-        [HttpGet("{id:int}")]
+        /*[HttpGet("{id:int}")]
         public async Task<ActionResult<Personaje>> Get(int id)
         {
             var elemento = await _context.Personajes.FirstAsync(x => x.Id == id);
             if(elemento==null) NotFound();
             return Ok(elemento);
-        }
+        }*/
 
         //Buscar por Nombre
         [HttpGet("name")]
@@ -43,6 +45,13 @@ namespace ChallengeAlkemy.Controllers
         }
 
         //Buscar por Edad
+        [HttpGet("{edad:int}")]
+        public async Task<ActionResult<Personaje>> Get(int edad)
+        {
+            //var elemento = await _context.Personajes.FirstAsync(x => x.Edad == edad);
+            //if (elemento == null) NotFound();
+            return Ok(await _context.Personajes.FirstOrDefaultAsync(x=>x.Edad==edad));
+        }
 
         /*[HttpGet("edad")]
         public async Task<ActionResult<Personaje>> Get(int edad)
@@ -57,7 +66,7 @@ namespace ChallengeAlkemy.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(Personaje personaje)
         {
-            _context.Personajes.Add(personaje);
+            _context.Add(personaje);
             await _context.SaveChangesAsync();
             return Ok(personaje);
         }
@@ -65,11 +74,11 @@ namespace ChallengeAlkemy.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(Personaje personaje,int id)
         {
-            var existe = await _context.Personajes.AnyAsync(x => x.Id == id);
+            //var existe = await _context.Personajes.AnyAsync(x => x.Id == id);
             //if (!existe) NotFound();
-            _context.Personajes.Update(personaje);
+            _context.Update(personaje);
             await _context.SaveChangesAsync();
-            return Ok(existe);
+            return Ok();
         }
         
         [HttpDelete("{id:int}")]
@@ -77,7 +86,7 @@ namespace ChallengeAlkemy.Controllers
         {
             var existe = await _context.Personajes.AnyAsync(x => x.Id == id);
             if (!existe) NotFound();
-            _context.Personajes.Remove(new Personaje {Id = id});
+            _context.Remove(new Personaje {Id = id});
             await _context.SaveChangesAsync();
             return Ok();
         }

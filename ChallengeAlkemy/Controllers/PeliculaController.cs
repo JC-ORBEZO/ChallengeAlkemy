@@ -1,4 +1,5 @@
 ﻿using ChallengeAlkemy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
     [Route("movies")]
+    [Authorize]
     public class PeliculaController : ControllerBase
     {
         private readonly ApplicationContext _context;

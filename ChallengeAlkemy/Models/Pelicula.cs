@@ -9,7 +9,6 @@ namespace ChallengeAlkemy.Models
     {
         [Key]
         public int Id { get; set; }
-        [Url]
         public string Imagen { get; set; }
         [Required]
         [MaxLength(50)]
