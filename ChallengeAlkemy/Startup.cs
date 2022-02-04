@@ -1,3 +1,4 @@
+using ChallengeAlkemy.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace ChallengeAlkemy
             x.JsonSerializerOptions.ReferenceHandler=ReferenceHandler.Preserve);
             services.AddDbContext<ApplicationContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<UserContext>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("UserConnectionString")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ChallengeAlkemy", Version = "v1" });
