@@ -9,7 +9,7 @@ namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
     [Route("movies")]
-    [Authorize]
+    //[Authorize]
     public class PeliculaController : ControllerBase
     {
         private readonly ApplicationContext _context;

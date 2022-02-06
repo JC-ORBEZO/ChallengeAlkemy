@@ -9,7 +9,7 @@ namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
     [Route("api/Generos")]
-    [Authorize]
+    //[Authorize]
     public class GeneroController : ControllerBase
     {
         private readonly ApplicationContext _context;

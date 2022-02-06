@@ -36,6 +36,7 @@ namespace ChallengeAlkemy
         {
             services.AddControllers().AddJsonOptions(x => 
             x.JsonSerializerOptions.ReferenceHandler=ReferenceHandler.Preserve);
+
             services.AddDbContext<ApplicationContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<UserContext>(options =>

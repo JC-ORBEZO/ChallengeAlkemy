@@ -9,7 +9,7 @@ namespace ChallengeAlkemy.Controllers
 {
     [ApiController]
     [Route("characters")]
-    [Authorize]
+    //[Authorize]
     public class PersonajeController : ControllerBase
     {
         private readonly ApplicationContext _context;
